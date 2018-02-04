@@ -8,19 +8,12 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MessagesTableVC: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        view.backgroundColor = UIColor.blue
+        view.backgroundColor = UIColor.white
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-
 }
 

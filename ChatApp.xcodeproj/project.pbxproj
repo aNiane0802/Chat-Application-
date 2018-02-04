@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		D411C3E620275A5800BDC131 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411C3E520275A5800BDC131 /* AppDelegate.swift */; };
-		D411C3E820275A5800BDC131 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411C3E720275A5800BDC131 /* ViewController.swift */; };
 		D411C3EB20275A5800BDC131 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D411C3E920275A5800BDC131 /* Main.storyboard */; };
 		D411C3ED20275A5800BDC131 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D411C3EC20275A5800BDC131 /* Assets.xcassets */; };
 		D411C3F020275A5800BDC131 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D411C3EE20275A5800BDC131 /* LaunchScreen.storyboard */; };
 		D411C3FB20275A5800BDC131 /* ChatAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411C3FA20275A5800BDC131 /* ChatAppTests.swift */; };
+		D411C40620275C9100BDC131 /* MessagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411C40520275C9100BDC131 /* MessagesVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,7 +28,6 @@
 /* Begin PBXFileReference section */
 		D411C3E220275A5800BDC131 /* ChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D411C3E520275A5800BDC131 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D411C3E720275A5800BDC131 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D411C3EA20275A5800BDC131 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D411C3EC20275A5800BDC131 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D411C3EF20275A5800BDC131 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -36,6 +35,7 @@
 		D411C3F620275A5800BDC131 /* ChatAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D411C3FA20275A5800BDC131 /* ChatAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAppTests.swift; sourceTree = "<group>"; };
 		D411C3FC20275A5800BDC131 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D411C40520275C9100BDC131 /* MessagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				D411C3E520275A5800BDC131 /* AppDelegate.swift */,
-				D411C3E720275A5800BDC131 /* ViewController.swift */,
+				D411C40520275C9100BDC131 /* MessagesVC.swift */,
 				D411C3E920275A5800BDC131 /* Main.storyboard */,
 				D411C3EC20275A5800BDC131 /* Assets.xcassets */,
 				D411C3EE20275A5800BDC131 /* LaunchScreen.storyboard */,
@@ -199,7 +199,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D411C3E820275A5800BDC131 /* ViewController.swift in Sources */,
+				D411C40620275C9100BDC131 /* MessagesVC.swift in Sources */,
 				D411C3E620275A5800BDC131 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
