@@ -7,38 +7,26 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class MessagesVC: UITableViewController {
-    
-    private let nameField : UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Name"
-        return textField
-    }()
-    
-    private let emailField : UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Email"
-        return textField
-    }()
-    
-    private let passwordField : UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Password"
-        return textField
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "Logout", style: .plain, target: self, action: #selector(backToLoginPage))
-    
+        
+        if Auth.auth().currentUser == nil {
+            performSelector(onMainThread: #selector(backToLoginPage), with: nil, waitUntilDone: false)
+        }
     }
     
     @objc func backToLoginPage() {
+        do {
+            try Auth.auth().signOut()
+            dismiss(animated: true, completion: nil)
+        } catch let error  {
+            print(error)
+        }
         present(LoginVC().self, animated: true, completion: nil)
     }
-    
-    
-    
-    
 }

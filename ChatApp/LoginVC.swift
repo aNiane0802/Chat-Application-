@@ -12,6 +12,17 @@ import FirebaseDatabase
 
 class LoginVC: UIViewController , UITextFieldDelegate {
     
+    
+    private var _stackForm = UIStackView()
+    private let loginRegisterSegmentedControl : UISegmentedControl = {
+       let segmentedControl = UISegmentedControl.init(items: ["Login","Register"])
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        segmentedControl.selectedSegmentIndex = 1
+        segmentedControl.tintColor = UIColor.white
+        segmentedControl.addTarget(self, action: #selector(handleLoginRegister), for: .valueChanged)
+        return segmentedControl
+    }()
+    
     private let inputViews : UIView = {
         let viewForm = UIView.init()
         viewForm.backgroundColor = UIColor.init(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
@@ -38,7 +49,7 @@ class LoginVC: UIViewController , UITextFieldDelegate {
         button.setAttributedTitle(title, for: .normal)
         button.backgroundColor = UIColor.init(red: 80/255, green: 101/255, blue: 161/255, alpha: 1)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+        button.addTarget(self, action: #selector(performLoginOrRegister), for: .touchUpInside)
         return button
     }()
     
@@ -76,11 +87,39 @@ class LoginVC: UIViewController , UITextFieldDelegate {
         view.backgroundColor = UIColor.init(red: 61/255, green: 91/255, blue: 151/255, alpha: 1)
         setupViewForms()
         setupRegisterButton()
+        setupLoginRegisterControls()
         setupProfileImage()
         setTextFieldsDelegate()
+        
+        
     }
     
-    @objc func handleRegister() {
+    @objc private func performLoginOrRegister() {
+        if loginRegisterSegmentedControl.selectedSegmentIndex == 1 {
+            handleRegister()
+        }else {
+            handleLogin()
+        }
+    }
+    
+    private func handleLogin(){
+        guard let email = emailField.text , let password = passwordField.text else {
+            return
+        }
+        
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            
+            if error != nil {
+                print(error ?? "No error")
+                return
+            }
+            
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+    }
+    
+    private func handleRegister() {
         
         guard let email = emailField.text , let password = passwordField.text , let name = nameField.text
             else {
@@ -98,12 +137,15 @@ class LoginVC: UIViewController , UITextFieldDelegate {
             }
             
             let userReferences = Database.database().reference(fromURL: "https://chatapp-9eb9e.firebaseio.com/").child("users").child(uid)
-            let values = ["name":name,"email":email,"paaword":password]
+            let values = ["name":name,"email":email,"password":password]
             userReferences.updateChildValues(values, withCompletionBlock: { (error, userReferences) in
                 if error != nil {
                     print(error ?? "No error")
                 }
+                
+                self.dismiss(animated: true, completion: nil)
             })
+            
             
             
         }
@@ -124,6 +166,7 @@ class LoginVC: UIViewController , UITextFieldDelegate {
         formStack.spacing = 1
         formStack.axis = .vertical
         formStack.translatesAutoresizingMaskIntoConstraints = false
+        _stackForm = formStack
         inputViews.addSubview(formStack)
         NSLayoutConstraint.activate([
             formStack.topAnchor.constraint(equalTo: inputViews.topAnchor),
@@ -138,7 +181,7 @@ class LoginVC: UIViewController , UITextFieldDelegate {
         view.addSubview(registerButton)
         NSLayoutConstraint.activate([
             registerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            registerButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            registerButton.widthAnchor.constraint(equalTo: inputViews.widthAnchor),
             registerButton.topAnchor.constraint(equalTo: inputViews.bottomAnchor, constant : 16),
             registerButton.heightAnchor.constraint(equalToConstant: 44)
             ])
@@ -150,7 +193,7 @@ class LoginVC: UIViewController , UITextFieldDelegate {
             profileImage.widthAnchor.constraint(equalToConstant: 100),
             profileImage.heightAnchor.constraint(equalToConstant: 100),
             profileImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            profileImage.bottomAnchor.constraint(equalTo: inputViews.topAnchor, constant: -40)
+            profileImage.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -24)
             ])
     }
     
@@ -158,6 +201,30 @@ class LoginVC: UIViewController , UITextFieldDelegate {
         emailField.delegate = self
         passwordField.delegate = self
         nameField.delegate = self
+    }
+    
+    private func setupLoginRegisterControls() {
+        view.addSubview(loginRegisterSegmentedControl)
+        NSLayoutConstraint.activate([
+            loginRegisterSegmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loginRegisterSegmentedControl.widthAnchor.constraint(equalTo: inputViews.widthAnchor),
+            loginRegisterSegmentedControl.heightAnchor.constraint(equalToConstant: 34),
+            loginRegisterSegmentedControl.bottomAnchor.constraint(equalTo: inputViews.topAnchor, constant: -16)
+            ])
+    }
+    
+    @objc private func handleLoginRegister() {
+        let title = NSAttributedString.init(string: loginRegisterSegmentedControl.titleForSegment(at: loginRegisterSegmentedControl.selectedSegmentIndex)!, attributes: [
+            NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 17),
+            NSAttributedStringKey.foregroundColor : UIColor.white
+            ])
+        registerButton.setAttributedTitle(title, for: .normal)
+        
+        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
+            _stackForm.removeArrangedSubview(nameField)
+        }else {
+            _stackForm.insertArrangedSubview(nameField, at: 0)
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
