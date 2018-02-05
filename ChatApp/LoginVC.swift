@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseDatabase
 
 class LoginVC: UIViewController , UITextFieldDelegate {
     
@@ -53,6 +55,7 @@ class LoginVC: UIViewController , UITextFieldDelegate {
         textField.placeholder = "Password"
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.borderStyle = UITextBorderStyle.roundedRect
+        textField.isSecureTextEntry = true 
         return textField
     }()
     
@@ -79,6 +82,31 @@ class LoginVC: UIViewController , UITextFieldDelegate {
     
     @objc func handleRegister() {
         
+        guard let email = emailField.text , let password = passwordField.text , let name = nameField.text
+            else {
+            return
+        }
+        
+        Auth.auth().createUser(withEmail: email, password: password) { (user : User?, error) in
+            
+            if error != nil {
+                print(error ?? "No error")
+            }
+            
+            guard let uid = user?.uid else {
+                return
+            }
+            
+            let userReferences = Database.database().reference(fromURL: "https://chatapp-9eb9e.firebaseio.com/").child("users").child(uid)
+            let values = ["name":name,"email":email,"paaword":password]
+            userReferences.updateChildValues(values, withCompletionBlock: { (error, userReferences) in
+                if error != nil {
+                    print(error ?? "No error")
+                }
+            })
+            
+            
+        }
     }
     
     private func setupViewForms() {
