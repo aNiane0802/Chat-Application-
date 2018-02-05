@@ -13,6 +13,8 @@
 		D411C3F020275A5800BDC131 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D411C3EE20275A5800BDC131 /* LaunchScreen.storyboard */; };
 		D411C3FB20275A5800BDC131 /* ChatAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411C3FA20275A5800BDC131 /* ChatAppTests.swift */; };
 		D411C40620275C9100BDC131 /* MessagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411C40520275C9100BDC131 /* MessagesVC.swift */; };
+		D4F8B9A52027A458002F91E8 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F8B9A42027A458002F91E8 /* LoginVC.swift */; };
+		D4F8B9A72027D718002F91E8 /* GoogleService-Info-2.plist in Resources */ = {isa = PBXBuildFile; fileRef = D4F8B9A62027D718002F91E8 /* GoogleService-Info-2.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,8 @@
 		D411C3FA20275A5800BDC131 /* ChatAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAppTests.swift; sourceTree = "<group>"; };
 		D411C3FC20275A5800BDC131 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D411C40520275C9100BDC131 /* MessagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesVC.swift; sourceTree = "<group>"; };
+		D4F8B9A42027A458002F91E8 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		D4F8B9A62027D718002F91E8 /* GoogleService-Info-2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-2.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,10 +83,12 @@
 			children = (
 				D411C3E520275A5800BDC131 /* AppDelegate.swift */,
 				D411C40520275C9100BDC131 /* MessagesVC.swift */,
+				D4F8B9A42027A458002F91E8 /* LoginVC.swift */,
 				D411C3E920275A5800BDC131 /* Main.storyboard */,
 				D411C3EC20275A5800BDC131 /* Assets.xcassets */,
 				D411C3EE20275A5800BDC131 /* LaunchScreen.storyboard */,
 				D411C3F120275A5800BDC131 /* Info.plist */,
+				D4F8B9A62027D718002F91E8 /* GoogleService-Info-2.plist */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -181,6 +187,7 @@
 			files = (
 				D411C3F020275A5800BDC131 /* LaunchScreen.storyboard in Resources */,
 				D411C3ED20275A5800BDC131 /* Assets.xcassets in Resources */,
+				D4F8B9A72027D718002F91E8 /* GoogleService-Info-2.plist in Resources */,
 				D411C3EB20275A5800BDC131 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -201,6 +208,7 @@
 			files = (
 				D411C40620275C9100BDC131 /* MessagesVC.swift in Sources */,
 				D411C3E620275A5800BDC131 /* AppDelegate.swift in Sources */,
+				D4F8B9A52027A458002F91E8 /* LoginVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
