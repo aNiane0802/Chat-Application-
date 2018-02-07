@@ -78,6 +78,8 @@ class LoginVC: UIViewController , UITextFieldDelegate {
         imageView.contentMode = .scaleAspectFill
         imageView.layer.borderWidth = 2.5
         imageView.layer.borderColor = UIColor.init(red: 240/255, green: 240/255, blue: 240/255, alpha: 1).cgColor
+        imageView.isUserInteractionEnabled = true
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -90,9 +92,11 @@ class LoginVC: UIViewController , UITextFieldDelegate {
         setupLoginRegisterControls()
         setupProfileImage()
         setTextFieldsDelegate()
+        profileImage.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(selectTapOnProfileImageView)))
         
         
     }
+
     
     @objc private func performLoginOrRegister() {
         if loginRegisterSegmentedControl.selectedSegmentIndex == 1 {
@@ -102,30 +106,28 @@ class LoginVC: UIViewController , UITextFieldDelegate {
         }
     }
     
+    public func setProfileImage(image : UIImage) {
+        profileImage.image = image 
+    }
+    
     private func handleLogin(){
         guard let email = emailField.text , let password = passwordField.text else {
             return
         }
-        
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
-            
             if error != nil {
                 print(error ?? "No error")
                 return
             }
-            
             self.dismiss(animated: true, completion: nil)
         }
-        
     }
     
     private func handleRegister() {
-        
         guard let email = emailField.text , let password = passwordField.text , let name = nameField.text
             else {
             return
         }
-        
         Auth.auth().createUser(withEmail: email, password: password) { (user : User?, error) in
             
             if error != nil {
@@ -188,12 +190,22 @@ class LoginVC: UIViewController , UITextFieldDelegate {
     }
     
     private func setupProfileImage() {
-        view.addSubview(profileImage)
+        let viewContainer = UIView.init()
+        view.addSubview(viewContainer)
+        viewContainer.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            profileImage.widthAnchor.constraint(equalToConstant: 100),
-            profileImage.heightAnchor.constraint(equalToConstant: 100),
-            profileImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            profileImage.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -24)
+            viewContainer.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            viewContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            viewContainer.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            viewContainer.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor)
+            ])
+        
+        viewContainer.addSubview(profileImage)
+        NSLayoutConstraint.activate([
+            profileImage.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor),
+            profileImage.centerYAnchor.constraint(equalTo: viewContainer.centerYAnchor),
+            profileImage.widthAnchor.constraint(equalTo: viewContainer.widthAnchor, multiplier: 1/3),
+            profileImage.heightAnchor.constraint(equalTo: viewContainer.widthAnchor, multiplier: 1/3)
             ])
     }
     

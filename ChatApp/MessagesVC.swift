@@ -14,6 +14,7 @@ class MessagesVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "Logout", style: .plain, target: self, action: #selector(backToLoginPage))
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(title : "New Message", style: .plain, target: self, action: #selector(sendNewMessage))
         
         if Auth.auth().currentUser == nil {
             performSelector(onMainThread: #selector(backToLoginPage), with: nil, waitUntilDone: false)
@@ -28,5 +29,9 @@ class MessagesVC: UITableViewController {
             print(error)
         }
         present(LoginVC().self, animated: true, completion: nil)
+    }
+    
+    @objc func sendNewMessage() {
+        
     }
 }

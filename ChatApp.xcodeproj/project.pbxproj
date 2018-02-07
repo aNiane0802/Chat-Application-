@@ -15,6 +15,7 @@
 		D411C3F020275A5800BDC131 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D411C3EE20275A5800BDC131 /* LaunchScreen.storyboard */; };
 		D411C3FB20275A5800BDC131 /* ChatAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411C3FA20275A5800BDC131 /* ChatAppTests.swift */; };
 		D411C40620275C9100BDC131 /* MessagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411C40520275C9100BDC131 /* MessagesVC.swift */; };
+		D414CD34202B4CF900DB2006 /* LoginExtensionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414CD33202B4CF900DB2006 /* LoginExtensionVC.swift */; };
 		D492C5BC2027EF6A00317543 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D492C5BB2027EF6A00317543 /* GoogleService-Info.plist */; };
 		D4F8B9A52027A458002F91E8 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F8B9A42027A458002F91E8 /* LoginVC.swift */; };
 /* End PBXBuildFile section */
@@ -46,6 +47,7 @@
 		D411C3FA20275A5800BDC131 /* ChatAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAppTests.swift; sourceTree = "<group>"; };
 		D411C3FC20275A5800BDC131 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D411C40520275C9100BDC131 /* MessagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesVC.swift; sourceTree = "<group>"; };
+		D414CD33202B4CF900DB2006 /* LoginExtensionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginExtensionVC.swift; sourceTree = "<group>"; };
 		D492C5BB2027EF6A00317543 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D4F8B9A42027A458002F91E8 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -107,6 +109,7 @@
 				D411C3E520275A5800BDC131 /* AppDelegate.swift */,
 				D411C40520275C9100BDC131 /* MessagesVC.swift */,
 				D4F8B9A42027A458002F91E8 /* LoginVC.swift */,
+				D414CD33202B4CF900DB2006 /* LoginExtensionVC.swift */,
 				D411C3E920275A5800BDC131 /* Main.storyboard */,
 				D411C3EC20275A5800BDC131 /* Assets.xcassets */,
 				D411C3EE20275A5800BDC131 /* LaunchScreen.storyboard */,
@@ -352,6 +355,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D414CD34202B4CF900DB2006 /* LoginExtensionVC.swift in Sources */,
 				D411C40620275C9100BDC131 /* MessagesVC.swift in Sources */,
 				D411C3E620275A5800BDC131 /* AppDelegate.swift in Sources */,
 				D4F8B9A52027A458002F91E8 /* LoginVC.swift in Sources */,
