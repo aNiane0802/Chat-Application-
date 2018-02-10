@@ -17,6 +17,8 @@
 		D411C40620275C9100BDC131 /* MessagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411C40520275C9100BDC131 /* MessagesVC.swift */; };
 		D414CD34202B4CF900DB2006 /* LoginExtensionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414CD33202B4CF900DB2006 /* LoginExtensionVC.swift */; };
 		D492C5BC2027EF6A00317543 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D492C5BB2027EF6A00317543 /* GoogleService-Info.plist */; };
+		D4E8ED5A202BA3770061AD76 /* ContactsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E8ED59202BA3770061AD76 /* ContactsVC.swift */; };
+		D4E8ED5E202BA7310061AD76 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E8ED5D202BA7310061AD76 /* Contact.swift */; };
 		D4F8B9A52027A458002F91E8 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F8B9A42027A458002F91E8 /* LoginVC.swift */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +51,8 @@
 		D411C40520275C9100BDC131 /* MessagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesVC.swift; sourceTree = "<group>"; };
 		D414CD33202B4CF900DB2006 /* LoginExtensionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginExtensionVC.swift; sourceTree = "<group>"; };
 		D492C5BB2027EF6A00317543 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D4E8ED59202BA3770061AD76 /* ContactsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsVC.swift; sourceTree = "<group>"; };
+		D4E8ED5D202BA7310061AD76 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		D4F8B9A42027A458002F91E8 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,10 +110,9 @@
 		D411C3E420275A5800BDC131 /* ChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				D4E8ED5C202BA70C0061AD76 /* Controller */,
+				D4E8ED5B202BA7020061AD76 /* Model */,
 				D411C3E520275A5800BDC131 /* AppDelegate.swift */,
-				D411C40520275C9100BDC131 /* MessagesVC.swift */,
-				D4F8B9A42027A458002F91E8 /* LoginVC.swift */,
-				D414CD33202B4CF900DB2006 /* LoginExtensionVC.swift */,
 				D411C3E920275A5800BDC131 /* Main.storyboard */,
 				D411C3EC20275A5800BDC131 /* Assets.xcassets */,
 				D411C3EE20275A5800BDC131 /* LaunchScreen.storyboard */,
@@ -126,6 +129,25 @@
 				D411C3FC20275A5800BDC131 /* Info.plist */,
 			);
 			path = ChatAppTests;
+			sourceTree = "<group>";
+		};
+		D4E8ED5B202BA7020061AD76 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D4E8ED5D202BA7310061AD76 /* Contact.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D4E8ED5C202BA70C0061AD76 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D4E8ED59202BA3770061AD76 /* ContactsVC.swift */,
+				D414CD33202B4CF900DB2006 /* LoginExtensionVC.swift */,
+				D4F8B9A42027A458002F91E8 /* LoginVC.swift */,
+				D411C40520275C9100BDC131 /* MessagesVC.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		E2D25A655BE61B878D11AB9D /* Frameworks */ = {
@@ -357,8 +379,10 @@
 			files = (
 				D414CD34202B4CF900DB2006 /* LoginExtensionVC.swift in Sources */,
 				D411C40620275C9100BDC131 /* MessagesVC.swift in Sources */,
+				D4E8ED5E202BA7310061AD76 /* Contact.swift in Sources */,
 				D411C3E620275A5800BDC131 /* AppDelegate.swift in Sources */,
 				D4F8B9A52027A458002F91E8 /* LoginVC.swift in Sources */,
+				D4E8ED5A202BA3770061AD76 /* ContactsVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

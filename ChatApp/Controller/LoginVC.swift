@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import FirebaseStorage
 
 class LoginVC: UIViewController , UITextFieldDelegate {
     
@@ -124,33 +125,57 @@ class LoginVC: UIViewController , UITextFieldDelegate {
     }
     
     private func handleRegister() {
-        guard let email = emailField.text , let password = passwordField.text , let name = nameField.text
+        guard let email = emailField.text , let password = passwordField.text , let name = nameField.text , let image = profileImage.image
             else {
             return
         }
+        
+        
         Auth.auth().createUser(withEmail: email, password: password) { (user : User?, error) in
             
-            if error != nil {
-                print(error ?? "No error")
+            let imageData = UIImagePNGRepresentation(image)
+            let imageUID = NSUUID.init().uuidString
+            let storage = Storage.storage().reference().child("profileImages").child(imageUID)
+            
+            
+            
+            
+            storage.putData(imageData!, metadata: nil) { (metadata, error) in
+                if error != nil {
+                    print(error.debugDescription)
+                }
+                print(metadata?.description ?? "No Metadata")
             }
+            
+            
+            
+            
+            if error != nil {
+                print(error.debugDescription)
+            }
+           
+            
             
             guard let uid = user?.uid else {
                 return
             }
-            
             let userReferences = Database.database().reference(fromURL: "https://chatapp-9eb9e.firebaseio.com/").child("users").child(uid)
             let values = ["name":name,"email":email,"password":password]
             userReferences.updateChildValues(values, withCompletionBlock: { (error, userReferences) in
                 if error != nil {
-                    print(error ?? "No error")
+                    print(error.debugDescription)
                 }
-                
                 self.dismiss(animated: true, completion: nil)
             })
-            
-            
-            
         }
+    }
+    
+    private func addUserToRemoteDatabase(){
+        
+    }
+    
+    private func saveProfileImageIntoRemoteStorage(){
+        
     }
     
     private func setupViewForms() {
