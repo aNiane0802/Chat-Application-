@@ -11,4 +11,5 @@ import Foundation
 struct Contact {
     var name : String!
     var email : String!
+    var profileImageURL : String!
 }

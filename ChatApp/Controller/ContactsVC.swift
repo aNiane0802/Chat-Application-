@@ -17,7 +17,7 @@ class ContactsVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
+        tableView.register(ContactCell.self, forCellReuseIdentifier: cellID)
         getUsers()
     }
     
@@ -34,8 +34,9 @@ class ContactsVC: UITableViewController {
                 return
             }
             
-            if let email = values["email"] as? String , let name = values["name"] as? String {
-                let contact = Contact(name : name , email : email)
+            if let email = values["email"] as? String , let name = values["name"] as? String  , let profileImageURL = values["profileImageURL"]as? String {
+                
+                let contact = Contact(name : name , email : email , profileImageURL : profileImageURL)
                 self._users.append(contact)
                 self.tableView.reloadData()
             }
@@ -57,13 +58,35 @@ class ContactsVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell.init(style: .subtitle, reuseIdentifier: self.cellID)
+        if let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? ContactCell{
+            
+            if  let name = _users[indexPath.row].name , let email = _users[indexPath.row].email {
+                cell.setupSubViews()
+                if let profileImageURL = _users[indexPath.row].profileImageURL {
+                    let url = URL.init(string: profileImageURL)
+                    URLSession.shared.dataTask(with: url!, completionHandler: { (data, reponse, error) in
+                        if error != nil{
+                            print(error ?? "No error message to display")
+                        }else {
+                            print(reponse ?? "No reponse message to display" )
+                        }
+                        if let profileImage = UIImage.init(data: data!){
+                            DispatchQueue.main.async {
+                                cell.updateCell(image: profileImage, name: name, email: email)
+                            }
+                        }
+                    }).resume()
+                }
+                return cell
+            }
+        }
         
-        cell.textLabel?.text = _users[indexPath.row].name
-        cell.detailTextLabel?.text = _users[indexPath.row].email
         
-        return cell
+        return ContactCell()
     }
-
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 84
+    }
 
 }

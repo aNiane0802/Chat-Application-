@@ -136,47 +136,34 @@ class LoginVC: UIViewController , UITextFieldDelegate {
             let imageData = UIImagePNGRepresentation(image)
             let imageUID = NSUUID.init().uuidString
             let storage = Storage.storage().reference().child("profileImages").child(imageUID)
-            
-            
-            
-            
+            guard let uid = user?.uid else {
+                return
+            }
             storage.putData(imageData!, metadata: nil) { (metadata, error) in
                 if error != nil {
                     print(error.debugDescription)
                 }
-                print(metadata?.description ?? "No Metadata")
+                guard let imageURL  = metadata?.downloadURL()?.absoluteString else {return}
+                let values = ["name":name,"email":email,"password":password, "profileImageURL": imageURL]
+                self.addUserToRemoteDatabase(uid: uid, values: values)
             }
-            
-            
-            
-            
             if error != nil {
                 print(error.debugDescription)
             }
-           
-            
-            
-            guard let uid = user?.uid else {
-                return
-            }
-            let userReferences = Database.database().reference(fromURL: "https://chatapp-9eb9e.firebaseio.com/").child("users").child(uid)
-            let values = ["name":name,"email":email,"password":password]
-            userReferences.updateChildValues(values, withCompletionBlock: { (error, userReferences) in
-                if error != nil {
-                    print(error.debugDescription)
-                }
-                self.dismiss(animated: true, completion: nil)
-            })
         }
     }
     
-    private func addUserToRemoteDatabase(){
+    private func addUserToRemoteDatabase(uid : String , values: [String:String]){
         
+        let userReferences = Database.database().reference(fromURL: "https://chatapp-9eb9e.firebaseio.com/").child("users").child(uid)
+        userReferences.updateChildValues(values, withCompletionBlock: { (error, userReferences) in
+            if error != nil {
+                print(error.debugDescription)
+            }
+            self.dismiss(animated: true, completion: nil)
+        })
     }
     
-    private func saveProfileImageIntoRemoteStorage(){
-        
-    }
     
     private func setupViewForms() {
         view.addSubview(inputViews)
