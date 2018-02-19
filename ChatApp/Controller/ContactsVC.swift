@@ -13,6 +13,7 @@ class ContactsVC: UITableViewController {
     
     private var _users = [Contact]()
     private let cellID = "cellID"
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +26,7 @@ class ContactsVC: UITableViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .cancel, target: self, action: #selector(handleBackButton))
         navigationItem.title = "Contacts"
         navigationController?.navigationBar.prefersLargeTitles = true
+        
     }
     
     private func getUsers() {
@@ -38,13 +40,13 @@ class ContactsVC: UITableViewController {
                 
                 let contact = Contact(name : name , email : email , profileImageURL : profileImageURL)
                 self._users.append(contact)
-                self.tableView.reloadData()
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
             }
  
         }) { (error) in
-            
             print(error)
-            
         }
         
     }
@@ -62,27 +64,22 @@ class ContactsVC: UITableViewController {
             
             if  let name = _users[indexPath.row].name , let email = _users[indexPath.row].email {
                 cell.setupSubViews()
+                cell.setUserInformations(name: name, email: email)
                 if let profileImageURL = _users[indexPath.row].profileImageURL {
-                    let url = URL.init(string: profileImageURL)
-                    URLSession.shared.dataTask(with: url!, completionHandler: { (data, reponse, error) in
-                        if error != nil{
-                            print(error ?? "No error message to display")
-                        }else {
-                            print(reponse ?? "No reponse message to display" )
-                        }
-                        if let profileImage = UIImage.init(data: data!){
-                            DispatchQueue.main.async {
-                                cell.updateCell(image: profileImage, name: name, email: email)
-                            }
-                        }
-                    }).resume()
+                    cell.setUserProfileImage(profileImageURL: profileImageURL)
                 }
                 return cell
             }
         }
-        
-        
         return ContactCell()
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let newMessageVC = NewMessageVC()
+        newMessageVC.view.backgroundColor = UIColor.white
+        newMessageVC.navigationItem.title = _users[indexPath.row].name
+        
+        navigationController?.pushViewController(newMessageVC, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

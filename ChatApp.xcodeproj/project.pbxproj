@@ -16,7 +16,9 @@
 		D411C3FB20275A5800BDC131 /* ChatAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411C3FA20275A5800BDC131 /* ChatAppTests.swift */; };
 		D411C40620275C9100BDC131 /* MessagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411C40520275C9100BDC131 /* MessagesVC.swift */; };
 		D414CD34202B4CF900DB2006 /* LoginExtensionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414CD33202B4CF900DB2006 /* LoginExtensionVC.swift */; };
+		D435646820324CFD00E309A9 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435646720324CFD00E309A9 /* Extensions.swift */; };
 		D447FFD12030D051005AA30B /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447FFD02030D051005AA30B /* ContactCell.swift */; };
+		D46DB486203B61890011F4FA /* NewMessageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46DB485203B61890011F4FA /* NewMessageVC.swift */; };
 		D492C5BC2027EF6A00317543 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D492C5BB2027EF6A00317543 /* GoogleService-Info.plist */; };
 		D4E8ED5A202BA3770061AD76 /* ContactsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E8ED59202BA3770061AD76 /* ContactsVC.swift */; };
 		D4E8ED5E202BA7310061AD76 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E8ED5D202BA7310061AD76 /* Contact.swift */; };
@@ -51,7 +53,9 @@
 		D411C3FC20275A5800BDC131 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D411C40520275C9100BDC131 /* MessagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesVC.swift; sourceTree = "<group>"; };
 		D414CD33202B4CF900DB2006 /* LoginExtensionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginExtensionVC.swift; sourceTree = "<group>"; };
+		D435646720324CFD00E309A9 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D447FFD02030D051005AA30B /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		D46DB485203B61890011F4FA /* NewMessageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageVC.swift; sourceTree = "<group>"; };
 		D492C5BB2027EF6A00317543 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D4E8ED59202BA3770061AD76 /* ContactsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsVC.swift; sourceTree = "<group>"; };
 		D4E8ED5D202BA7310061AD76 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
@@ -112,6 +116,7 @@
 		D411C3E420275A5800BDC131 /* ChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				D435646620324CD100E309A9 /* Extensions */,
 				D447FFCF2030CFBE005AA30B /* View */,
 				D4E8ED5C202BA70C0061AD76 /* Controller */,
 				D4E8ED5B202BA7020061AD76 /* Model */,
@@ -132,6 +137,14 @@
 				D411C3FC20275A5800BDC131 /* Info.plist */,
 			);
 			path = ChatAppTests;
+			sourceTree = "<group>";
+		};
+		D435646620324CD100E309A9 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D435646720324CFD00E309A9 /* Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		D447FFCF2030CFBE005AA30B /* View */ = {
@@ -157,6 +170,7 @@
 				D414CD33202B4CF900DB2006 /* LoginExtensionVC.swift */,
 				D4F8B9A42027A458002F91E8 /* LoginVC.swift */,
 				D411C40520275C9100BDC131 /* MessagesVC.swift */,
+				D46DB485203B61890011F4FA /* NewMessageVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -389,8 +403,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D414CD34202B4CF900DB2006 /* LoginExtensionVC.swift in Sources */,
+				D46DB486203B61890011F4FA /* NewMessageVC.swift in Sources */,
 				D411C40620275C9100BDC131 /* MessagesVC.swift in Sources */,
 				D4E8ED5E202BA7310061AD76 /* Contact.swift in Sources */,
+				D435646820324CFD00E309A9 /* Extensions.swift in Sources */,
 				D411C3E620275A5800BDC131 /* AppDelegate.swift in Sources */,
 				D4F8B9A52027A458002F91E8 /* LoginVC.swift in Sources */,
 				D447FFD12030D051005AA30B /* ContactCell.swift in Sources */,

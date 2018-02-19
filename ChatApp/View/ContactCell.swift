@@ -10,20 +10,21 @@ import UIKit
 
 class ContactCell: UITableViewCell {
     
-    private let emailField : UITextField = {
-        let textField = UITextField.init()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.textAlignment = .left
-        textField.isEnabled = false
-        return textField
+    private let emailField : UILabel = {
+        let label = UILabel.init()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .left
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.tintColor = UIColor.lightGray
+        return label
     }()
     
-    private let nameField : UITextField = {
-        let textField = UITextField.init()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.textAlignment = .left
-        textField.isEnabled = false 
-        return textField
+    private let nameField : UILabel = {
+        let label = UILabel.init()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .left
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        return label
     }()
     
     
@@ -60,9 +61,12 @@ class ContactCell: UITableViewCell {
             ])
     }
     
-    func updateCell(image : UIImage ,name : String,email : String){
-        profileImageView.image = image
+    func setUserInformations(name : String,email : String){
         emailField.text = email
         nameField.text = name
+    }
+    
+    func setUserProfileImage(profileImageURL : String){
+        profileImageView.loadImageUsingCacheWithURL(profileImageURL: profileImageURL)
     }
 }

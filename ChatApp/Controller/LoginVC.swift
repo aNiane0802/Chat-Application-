@@ -133,7 +133,7 @@ class LoginVC: UIViewController , UITextFieldDelegate {
         
         Auth.auth().createUser(withEmail: email, password: password) { (user : User?, error) in
             
-            let imageData = UIImagePNGRepresentation(image)
+            let imageData = UIImageJPEGRepresentation(image, 0.3)
             let imageUID = NSUUID.init().uuidString
             let storage = Storage.storage().reference().child("profileImages").child(imageUID)
             guard let uid = user?.uid else {

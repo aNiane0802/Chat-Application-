@@ -4,7 +4,7 @@
 //
 //  Created by Aboubakrine Niane on 04/02/2018.
 //  Copyright © 2018 Aboubakrine Niane. All rights reserved.
-//
+//  Handle the problem of the title View
 
 import UIKit
 import FirebaseAuth
@@ -14,11 +14,19 @@ class MessagesVC: UITableViewController {
     
     private var _users = [Any]()
     
+    private var profileImageView : UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "Logout", style: .plain, target: self, action: #selector(backToLoginPage))
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(title : "New Message", style: .plain, target: self, action: #selector(sendNewMessage))
-        navigationController?.navigationBar.prefersLargeTitles = true 
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
         
        
     }
@@ -27,6 +35,8 @@ class MessagesVC: UITableViewController {
         super.viewWillAppear(true)
         
         handleFirstVCTopPresent()
+       // setupViewsInNavBar()
+        
     }
     
     func handleFirstVCTopPresent() {
@@ -47,7 +57,7 @@ class MessagesVC: UITableViewController {
                 print("Enable to query the database for the name ")
                 return
             }
-            self.navigationItem.title = name
+           self.navigationItem.title = name
             
         })
     }
@@ -64,6 +74,19 @@ class MessagesVC: UITableViewController {
     
     @objc func sendNewMessage() {
         present(UINavigationController.init(rootViewController: ContactsVC()), animated: true, completion: nil)
+    }
+    
+    
+    func setupViewsInNavBar() {
+        
+        let containerView = UIView.init()
+        containerView.addSubview(profileImageView)
+        NSLayoutConstraint.activate([
+            profileImageView.rightAnchor.constraint(equalTo: containerView.rightAnchor),
+            profileImageView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            profileImageView.widthAnchor.constraint(equalToConstant: 44),
+            profileImageView.heightAnchor.constraint(equalToConstant: 44)
+            ])
     }
     
 }
