@@ -33,32 +33,69 @@ class ContactCell: UITableViewCell {
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.clipsToBounds = true
+        profileImageView.layer.cornerRadius = 75/2
         return profileImageView
     }()
+    
+    private let timeLabel : UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor = UIColor.lightGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = NSTextAlignment.right
+        return label
+    }()
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupSubViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     
     func setupSubViews(){
         addSubview(profileImageView)
         NSLayoutConstraint.activate([
             profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8),
             profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            profileImageView.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -8),
+            profileImageView.heightAnchor.constraint(equalToConstant: 75),
             profileImageView.widthAnchor.constraint(equalTo: self.heightAnchor, constant: -8)
             ])
         
-        profileImageView.layer.cornerRadius = (self.frame.height-8)/2
         
-        let stackViewContactInfos = UIStackView.init(arrangedSubviews: [nameField,emailField])
-        stackViewContactInfos.translatesAutoresizingMaskIntoConstraints = false
-        stackViewContactInfos.distribution = .fillEqually
-        stackViewContactInfos.axis = .vertical
         
-        addSubview(stackViewContactInfos)
+        
+        addSubview(nameField)
         NSLayoutConstraint.activate([
-            stackViewContactInfos.rightAnchor.constraint(equalTo: self.rightAnchor),
-            stackViewContactInfos.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8),
-            stackViewContactInfos.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            stackViewContactInfos.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -8)
+            nameField.leftAnchor.constraint(equalTo: profileImageView.rightAnchor,constant:16),
+            nameField.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.4),
+            nameField.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1/2),
+            nameField.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor)
             ])
+        
+        addSubview(emailField)
+        NSLayoutConstraint.activate([
+            emailField.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            emailField.leadingAnchor.constraint(equalTo: nameField.leadingAnchor),
+            emailField.heightAnchor.constraint(equalTo: nameField.heightAnchor),
+            emailField.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.7)
+            ])
+        
+        addSubview(timeLabel)
+        NSLayoutConstraint.activate([
+            timeLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: -13),
+            timeLabel.leadingAnchor.constraint(equalTo: nameField.trailingAnchor),
+            timeLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            timeLabel.heightAnchor.constraint(equalToConstant: 22)
+            ])
+        
+        
+        
     }
     
     func setUserInformations(name : String,email : String){
@@ -68,5 +105,9 @@ class ContactCell: UITableViewCell {
     
     func setUserProfileImage(profileImageURL : String){
         profileImageView.loadImageUsingCacheWithURL(profileImageURL: profileImageURL)
+    }
+    
+    func setTimeLabel(time: String) {
+        timeLabel.text = time 
     }
 }

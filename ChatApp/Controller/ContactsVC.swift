@@ -13,6 +13,7 @@ class ContactsVC: UITableViewController {
     
     private var _users = [Contact]()
     private let cellID = "cellID"
+    private var _messagesController = MessagesVC()
     
 
     override func viewDidLoad() {
@@ -36,9 +37,10 @@ class ContactsVC: UITableViewController {
                 return
             }
             
-            if let email = values["email"] as? String , let name = values["name"] as? String  , let profileImageURL = values["profileImageURL"]as? String {
+            let uid = snapShot.key
+            if let email = values["email"] as? String , let name = values["name"] as? String  , let profileImageURL = values["profileImageURL"]as? String{
                 
-                let contact = Contact(name : name , email : email , profileImageURL : profileImageURL)
+                let contact = Contact(name : name , email : email , profileImageURL : profileImageURL, uid: uid)
                 self._users.append(contact)
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
@@ -75,15 +77,21 @@ class ContactsVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let newMessageVC = NewMessageVC()
-        newMessageVC.view.backgroundColor = UIColor.white
-        newMessageVC.navigationItem.title = _users[indexPath.row].name
-        
-        navigationController?.pushViewController(newMessageVC, animated: true)
+        let chatController = ChatController()
+        chatController.view.backgroundColor = UIColor.white
+        chatController.setReceiver(receiver: _users[indexPath.row])
+        dismiss(animated: true) {
+            self._messagesController.navigationController?.pushViewController(chatController, animated: true)
+        }
     }
+    
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 84
+    }
+    
+    public func setMessagesReference(messagesVC : MessagesVC) {
+        _messagesController = messagesVC
     }
 
 }

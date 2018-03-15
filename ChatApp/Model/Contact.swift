@@ -12,4 +12,5 @@ struct Contact {
     var name : String!
     var email : String!
     var profileImageURL : String!
+    var uid : String! 
 }
