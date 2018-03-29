@@ -19,6 +19,7 @@
 		D414CD34202B4CF900DB2006 /* LoginExtensionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414CD33202B4CF900DB2006 /* LoginExtensionVC.swift */; };
 		D435646820324CFD00E309A9 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435646720324CFD00E309A9 /* Extensions.swift */; };
 		D447FFD12030D051005AA30B /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447FFD02030D051005AA30B /* ContactCell.swift */; };
+		D457ECD72066C3A5000A5008 /* ChatControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D457ECD62066C3A5000A5008 /* ChatControllerExtension.swift */; };
 		D46DB486203B61890011F4FA /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46DB485203B61890011F4FA /* ChatController.swift */; };
 		D492C5BC2027EF6A00317543 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D492C5BB2027EF6A00317543 /* GoogleService-Info.plist */; };
 		D4C3B7F82059D78F006D709B /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3B7F72059D78F006D709B /* ChatMessageCell.swift */; };
@@ -58,6 +59,7 @@
 		D414CD33202B4CF900DB2006 /* LoginExtensionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginExtensionVC.swift; sourceTree = "<group>"; };
 		D435646720324CFD00E309A9 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D447FFD02030D051005AA30B /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		D457ECD62066C3A5000A5008 /* ChatControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatControllerExtension.swift; sourceTree = "<group>"; };
 		D46DB485203B61890011F4FA /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		D492C5BB2027EF6A00317543 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D4C3B7F72059D78F006D709B /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				D435646720324CFD00E309A9 /* Extensions.swift */,
+				D457ECD62066C3A5000A5008 /* ChatControllerExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -409,6 +412,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D414CD34202B4CF900DB2006 /* LoginExtensionVC.swift in Sources */,
+				D457ECD72066C3A5000A5008 /* ChatControllerExtension.swift in Sources */,
 				D46DB486203B61890011F4FA /* ChatController.swift in Sources */,
 				D411C40620275C9100BDC131 /* MessagesVC.swift in Sources */,
 				D4E8ED5E202BA7310061AD76 /* Contact.swift in Sources */,

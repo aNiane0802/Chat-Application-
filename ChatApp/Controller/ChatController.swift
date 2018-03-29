@@ -12,27 +12,35 @@ import FirebaseDatabase
 
 
  class ChatController: UIViewController , UITextFieldDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
-    
-    private var _receiver = Contact(){
+
+    internal var _receiver = Contact(){
         didSet{
             navigationItem.title = _receiver.name
         }
     }
     
-    private let cellID = "cellID"
-    private var _messages = [Message]()
+    internal let cellID = "cellID"
+    
+    
+    internal let _containerView : UIView = {
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        return containerView
+    }()
+    
+    
     
     // Collection views need a UICollectionViewFlowLayout object to be instanciated correctly
-    private var _messagesCollectionView : UICollectionView = {
-       let collectionView = UICollectionView.init(frame: CGRect.init(), collectionViewLayout: UICollectionViewFlowLayout.init())
+    internal var _messagesCollectionView : UICollectionView = {
+        let collectionView = UICollectionView.init(frame: CGRect.init(), collectionViewLayout: UICollectionViewFlowLayout.init())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .white
-        collectionView.alwaysBounceVertical = true 
+        collectionView.alwaysBounceVertical = true
         return collectionView
         
     }()
-
-    private let sendButton : UIButton = {
+    
+    internal let sendButton : UIButton = {
         let button = UIButton.init(type: UIButtonType.system)
         button.setTitle("SEND", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.semibold)
@@ -40,10 +48,10 @@ import FirebaseDatabase
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.white, for: .normal)
         button.backgroundColor = #colorLiteral(red: 1, green: 0.2537977431, blue: 0.4723718762, alpha: 1)
-        return button 
+        return button
     }()
     
-    private let messageArea : UITextField = {
+    internal let messageArea : UITextField = {
         let textField =  UITextField()
         textField.placeholder = "  Enter message..."
         textField.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.medium)
@@ -54,20 +62,31 @@ import FirebaseDatabase
         return textField
     }()
     
+    
+    lazy var _messages = [Message]()
+    internal lazy  var containerBottomAnchor =  NSLayoutConstraint()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        messageArea.delegate = self
         navigationController?.navigationItem.largeTitleDisplayMode = .automatic
         setFormsViews()
-        _messagesCollectionView.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellID)
-        _messagesCollectionView.dataSource = self
-        _messagesCollectionView.delegate = self
+        setupMessagesCollectionView()
+        addObserverToKeyboard()
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         observeMessages()// Why here and not in the viewDidLoad ? The value of receiver has not been set yet in the view did Load
        
+    }
+   
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        _messagesCollectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets.zero
     }
     
     @objc func sendMessage() {
@@ -86,79 +105,52 @@ import FirebaseDatabase
         
         let referenceForReceiverMesages = Database.database().reference().child("usersMessages").child(_receiver.uid)
         referenceForReceiverMesages.updateChildValues(valuesForUsersMessages)
+        
+        messageArea.text = ""
     }
     
-    func setFormsViews() {
-        let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(containerView)
-        
-        NSLayoutConstraint.activate([
-            containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: -8),
-            containerView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-            containerView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-            containerView.heightAnchor.constraint(equalToConstant: 60)
-            ])
-        
-        containerView.addSubview(sendButton)
-        NSLayoutConstraint.activate([
-            sendButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            sendButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            sendButton.topAnchor.constraint(equalTo: containerView.topAnchor),
-            sendButton.widthAnchor.constraint(equalToConstant: 60)
-            ])
-        
-        containerView.addSubview(messageArea)
-        NSLayoutConstraint.activate([
-            messageArea.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -8),
-            messageArea.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            messageArea.topAnchor.constraint(equalTo: containerView.topAnchor),
-            messageArea.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8)
-            ])
-        
-        view.addSubview(_messagesCollectionView)
-        NSLayoutConstraint.activate([
-            _messagesCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            _messagesCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            _messagesCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            _messagesCollectionView.bottomAnchor.constraint(equalTo: containerView.topAnchor)
-            ])
-        
+    fileprivate func setupMessagesCollectionView() {
+        _messagesCollectionView.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellID)
+        _messagesCollectionView.dataSource = self
+        _messagesCollectionView.delegate = self
+        _messagesCollectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+        _messagesCollectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        _messagesCollectionView.keyboardDismissMode = .interactive
     }
+    
     
     func observeMessages() {
-        let reference = Database.database().reference().child("usersMessages").child(_receiver.uid)
+        
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        let reference = Database.database().reference().child("usersMessages").child(uid)
         reference.observe(.childAdded, with: { (snapshot) in
-            let messageID = snapshot.key
-            let messagesRef = Database.database().reference().child("messages").child(messageID)
-            messagesRef.observe(.value, with: { (snapshot) in
+            let messageId = snapshot.key
             
+            let messagesRef = Database.database().reference().child("messages").child(messageId)
+            
+            messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                
                 guard let values = snapshot.value as? [String:Any] else {
                     return
                 }
                 
-                guard let messageText = values["text"] as? String , let receiver = values["receiver"] as? String , let sender = values["sender"] as? String , let timeStamp = values["timeStamp"] as? TimeInterval else {
+                guard let receiver = values["receiver"] as? String , let sender = values["sender"] as? String , let text = values["text"] as? String , let time = values["timeStamp"] as? TimeInterval else {
                     return
                 }
                 
-                
-                let message = Message.init(content: messageText, senderUid: sender, receiverUid: receiver, time: timeStamp)
+                let message = Message(content: text, senderUid: sender, receiverUid: receiver, time: time)
                 if message.getChatPartenerUid() == self._receiver.uid {
-                    self._messages.append(message)
                     DispatchQueue.main.async {
+                        self._messages.append(message)
                         self._messagesCollectionView.reloadData()
                     }
-                    
                 }
-                
-            }, withCancel: nil)
+            
+            })
+            
         }, withCancel: nil)
-    }
-    
-    //MARK: TextField Delegate methods 
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
     }
     
     public func setReceiver(receiver : Contact) {
@@ -171,9 +163,22 @@ import FirebaseDatabase
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as? ChatMessageCell {
-            cell.backgroundColor = .red
+            
+            guard let currentUserUid = Auth.auth().currentUser?.uid else { return ChatMessageCell() }
+            
             let message = _messages[indexPath.row]
             cell.setText(text: message.content!)
+            cell.bubbleWidthConstraint.constant = estimatedFrameForText(text: message.content!).width + 36
+            
+            if message.receiverUid == currentUserUid {
+                cell.changeBubbleViewColor(color: #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1))
+                cell.changeTextViewColor(color: UIColor.black)
+                cell.setupForReceivedMessages(profileImageUrl: _receiver.profileImageURL)
+            }else {
+                cell.changeBubbleViewColor(color: #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1))
+                cell.changeTextViewColor(color: .white)
+                cell.setupForSentMessages()
+            }
             return cell
 
         }
@@ -181,6 +186,61 @@ import FirebaseDatabase
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize.init(width: view.frame.width, height: 80)
+        var height = CGFloat.init(80)
+        
+        if let text = _messages[indexPath.item].content{
+            let estimatedFrame = estimatedFrameForText(text: text)
+            height = estimatedFrame.height + 36
+        }
+        return CGSize.init(width: _messagesCollectionView.frame.width, height: height)
     }
+    
+    
+    //Check every object and methods . Related to typography , Check chapter typography to understand better
+    private func estimatedFrameForText(text: String) -> CGRect{
+        
+        let size = CGSize(width: 205, height: 1000)
+        let options = NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin)
+        
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 18, weight: .medium)], context: nil)
+    }
+    
+    func addObserverToKeyboard(){
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide , object: nil)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func handleKeyboardWillShow(notification : Notification){
+        guard let userInfo = notification.userInfo else {
+            return
+        }
+        
+        guard let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey] as? CGRect , let keyboardDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double else {
+            return
+        }
+        containerBottomAnchor.constant -= keyboardFrame.height - 8
+        UIView.animate(withDuration: keyboardDuration) {
+            self.view.layoutIfNeeded()
+        }
+
+    }
+    
+    @objc func handleKeyboardWillHide(notification : Notification){
+        guard let userInfo = notification.userInfo else {
+            return
+        }
+        guard let keyboardDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double else {
+            return
+        }
+        self.containerBottomAnchor.constant = -8
+        UIView.animate(withDuration: keyboardDuration) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
 }

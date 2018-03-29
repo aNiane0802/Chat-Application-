@@ -16,6 +16,7 @@ class MessagesVC: UITableViewController {
     private let cellID = "cellId"
     private var _messages = [Message]()
     private var _lastMessagePerUser = [String:Any]()
+    lazy var timer = Timer()
     
     private var profileImageView : UIImageView = {
         let imageView = UIImageView()
@@ -89,8 +90,8 @@ class MessagesVC: UITableViewController {
             return
         }
         
-        let eferenceForUsersMessages = Database.database().reference().child("usersMessages").child(currentUserUid)
-        eferenceForUsersMessages.observe(.childAdded, with: { (snapshot) in
+        let referenceForUsersMessages = Database.database().reference().child("usersMessages").child(currentUserUid)
+        referenceForUsersMessages.observe(.childAdded, with: { (snapshot) in
             
             let messageKey = snapshot.key
             
@@ -118,16 +119,22 @@ class MessagesVC: UITableViewController {
                     }
                     
                 })
+                // The task is canceled until the last message is appended to the messages Array
+                self.timer.invalidate()
+                //Will schedule the reload data later to 1s from now
+                self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.reloadData), userInfo: nil, repeats: false)
                 
-                
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
             }, withCancel: nil)
             
         }, withCancel: nil)
         
         
+    }
+    
+    @objc func reloadData(){
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     
