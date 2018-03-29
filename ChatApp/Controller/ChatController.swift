@@ -108,11 +108,11 @@ import FirebaseDatabase
         let reference = Database.database().reference().child("messages").childByAutoId()
         reference.updateChildValues(values)
         
-        let referenceForSenderMessages = Database.database().reference().child("usersMessages").child(senderUid)
+        let referenceForSenderMessages = Database.database().reference().child("usersMessages").child(senderUid).child(_receiver.uid)
         let valuesForUsersMessages =  [reference.key:1] as [String:Any]
         referenceForSenderMessages.updateChildValues(valuesForUsersMessages)
         
-        let referenceForReceiverMesages = Database.database().reference().child("usersMessages").child(_receiver.uid)
+        let referenceForReceiverMesages = Database.database().reference().child("usersMessages").child(_receiver.uid).child(senderUid)
         referenceForReceiverMesages.updateChildValues(valuesForUsersMessages)
         
         messageArea.text = ""
@@ -133,7 +133,7 @@ import FirebaseDatabase
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
-        let reference = Database.database().reference().child("usersMessages").child(uid)
+        let reference = Database.database().reference().child("usersMessages").child(uid).child(_receiver.uid)
         reference.observe(.childAdded, with: { (snapshot) in
             let messageId = snapshot.key
             

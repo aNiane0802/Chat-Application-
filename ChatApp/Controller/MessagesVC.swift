@@ -85,56 +85,55 @@ class MessagesVC: UITableViewController {
     }
     
     private func getMessagesForCurrentUser() {
-        
         guard let currentUserUid = Auth.auth().currentUser?.uid else {
             return
         }
-        
-        let referenceForUsersMessages = Database.database().reference().child("usersMessages").child(currentUserUid)
-        referenceForUsersMessages.observe(.childAdded, with: { (snapshot) in
-            
-            let messageKey = snapshot.key
-            
-            let referenceForUsersMessages = Database.database().reference().child("messages").child(messageKey)
-            referenceForUsersMessages.observeSingleEvent(of: .value, with: { (snapshot) in
-                guard let values = snapshot.value as? [String:Any] else {
-                    return
-                }
-                
-                guard let messageText = values["text"] as? String , let receiver = values["receiver"] as? String , let sender = values["sender"] as? String , let timeStamp = values["timeStamp"] as? TimeInterval else {
-                    return
-                }
-                
-                
-                let message = Message.init(content: messageText, senderUid: sender, receiverUid: receiver, time: timeStamp)
-                let chatPartenerUID = message.getChatPartenerUid()
-                self._lastMessagePerUser[chatPartenerUID] = message
-                
-                self._messages = Array(self._lastMessagePerUser.values) as! [Message] // What does it do ?
-                self._messages.sort(by: { (message1, message2) -> Bool in
-                    if message1.time > message2.time{
-                        return true
-                    }else {
-                        return false
-                    }
-                    
-                })
-                // The task is canceled until the last message is appended to the messages Array
-                self.timer.invalidate()
-                //Will schedule the reload data later to 1s from now
-                self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.reloadData), userInfo: nil, repeats: false)
-                
+        let referenceForUChatPartnersUIDs = Database.database().reference().child("usersMessages").child(currentUserUid)
+        referenceForUChatPartnersUIDs.observe(.childAdded, with: { (snapshot) in
+            let receiverUID = snapshot.key
+            referenceForUChatPartnersUIDs.child(receiverUID).observe(.childAdded, with: { (snapshot) in
+                let messageKey = snapshot.key
+                self.fetchMessages(messageKey: messageKey)
             }, withCancel: nil)
-            
         }, withCancel: nil)
-        
-        
     }
     
+    
+    //Optimization : The sorting part was previously done every time a message was fetched which is really inefficient
     @objc func reloadData(){
+        self._messages = Array(self._lastMessagePerUser.values) as! [Message] // What does it do ?
+        self._messages.sort(by: { (message1, message2) -> Bool in
+            if message1.time > message2.time{
+                return true
+            }else {
+                return false
+            }
+        })
+        
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
+    }
+    
+    private func fetchMessages(messageKey: String){
+        let referenceForUsersMessages = Database.database().reference().child("messages").child(messageKey)
+        referenceForUsersMessages.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let values = snapshot.value as? [String:Any] else {
+                return
+            }
+            guard let messageText = values["text"] as? String , let receiver = values["receiver"] as? String , let sender = values["sender"] as? String , let timeStamp = values["timeStamp"] as? TimeInterval else {
+                return
+            }
+            let message = Message.init(content: messageText, senderUid: sender, receiverUid: receiver, time: timeStamp)
+            let chatPartenerUID = message.getChatPartenerUid()
+            self._lastMessagePerUser[chatPartenerUID] = message
+            
+            // The task is canceled until the last message is appended to the messages Array
+            self.timer.invalidate()
+            //Will schedule the reload data later to 1s from now
+            self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.reloadData), userInfo: nil, repeats: false)
+            
+        }, withCancel: nil)
     }
     
     
@@ -159,7 +158,6 @@ class MessagesVC: UITableViewController {
             }
             
             reference.observe(.value, with: { (snapShot) in
-                
                 guard let values = snapShot.value as? [String:Any] else {
                     return
                 }
