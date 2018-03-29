@@ -22,7 +22,7 @@ import FirebaseDatabase
     internal let cellID = "cellID"
     
     
-    internal let _containerView : UIView = {
+    lazy var _containerView : UIView = {
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
         return containerView
@@ -61,6 +61,15 @@ import FirebaseDatabase
         textField.borderStyle = UITextBorderStyle.roundedRect
         return textField
     }()
+    
+    // Unable to work with the inputAccessoryView . Some of the things have to check up later
+    /*
+    override var inputAccessoryView: UIView?{
+        get{
+            return _containerView
+        }
+    }
+  */
     
     
     lazy var _messages = [Message]()
@@ -115,7 +124,7 @@ import FirebaseDatabase
         _messagesCollectionView.delegate = self
         _messagesCollectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         _messagesCollectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        _messagesCollectionView.keyboardDismissMode = .interactive
+        _messagesCollectionView.keyboardDismissMode = .onDrag
     }
     
     
